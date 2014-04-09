@@ -7,12 +7,41 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style" />
     <meta name="format-detection" content="telephone=no" />
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" />
+    <link rel="stylesheet" href="http://g.tbcdn.cn/??tb/global/2.6.13/reset-min.css" />
 </head>
 <body>
+<a id="J_Zan" href="javascript:;">赞</a>
+<a id="J_Cai" href="javascript:;">踩</a>
 <div id="J_BarChart" class="bar-chart"></div>
-<script src="http://g.tbcdn.cn/kissy/k/1.4.2/seed-min.js"></script>
+<script src="http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js" charset="utf-8"></script>
 <script>
     (function(S) {
+        S.use('node, io', function(S, Node, IO) {
+            var $ = S.all;
+
+
+            $('#J_Zan').on('click', function() {
+                IO.get('/vote/set/zan/', function(res) {
+                    alert(res.msg);
+                });
+
+                IO.get('/vote/get/', function(res) {
+                    $('#J_BarChart').html(JSON.stringify(res));
+                });
+            });
+
+            $('#J_Cai').on('click', function() {
+                IO.get('/vote/set/cai/', function(res) {
+                    alert(res.msg);
+                });
+
+                IO.get('/vote/get/', function(res) {
+                    $('#J_BarChart').html(JSON.stringify(res));
+                });
+            });
+
+
+        });
     })(KISSY);
 </script>
 </body>
