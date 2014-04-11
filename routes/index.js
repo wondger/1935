@@ -6,6 +6,7 @@ var fs   = require('fs');
  * @param {Object} res
  */
 var setData = function(req, res) {
+    console.log('setData()');
     var state = req.params.state,
         data  = require('../data.json');
 
@@ -18,7 +19,7 @@ var setData = function(req, res) {
         } else {
             res.json({
                 state: 1,
-                msg: '写入成功'
+                msg: '感谢您的投票！'
             });
         }
     });
@@ -30,8 +31,10 @@ var setData = function(req, res) {
  * @param {Object} res
  */
 var getData = function(req, res) {
+    console.log('getData()');
     var data  = require('../data.json');
 
+    console.log(data);
     res.json(data);
 };
 
@@ -41,7 +44,22 @@ var getData = function(req, res) {
  * @param {Object} res
  */
 var renderHome = function(req, res) {
+    console.log('renderHome()' + new Date());
+    /*
+    res.render('test', {}, function(err, html) {
+        if (err) {
+            throw err;
+        } else {
+            res.send(html);
+        }
+    });
+    */
     res.render('index', {}, function(err, html) {
+        console.log('render index:' + new Date());
+        console.log('err:' + new Date());
+        console.log(err);
+        console.log('html:' + new Date());
+        console.log(html);
         if (err) {
             throw err;
         } else {

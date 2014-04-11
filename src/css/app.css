@@ -1,0 +1,9 @@
+#J_Tip {
+    display: inline-block;
+    width: 100px;
+    height: 32px;
+    line-height: 32px;
+    vertical-align: middle;
+    color: #FFF;
+    background: #000;
+}

@@ -8,41 +8,267 @@
     <meta name="format-detection" content="telephone=no" />
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" />
     <link rel="stylesheet" href="http://g.tbcdn.cn/??tb/global/2.6.13/reset-min.css" />
+    <style type="text/css">
+    body {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .J_OperationBar {
+        width: 100%;
+        margin-bottom: 20px;
+        height: 32px;
+        line-height: 32px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .J_OperationBar .iconfont {
+        font-size: 32px;
+    }
+
+    .container {
+        margin: 0 auto;
+        width: 100%;
+        height: 200px;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    @font-face {
+        font-family: 'iconfont';
+        src: url('./css/iconfont.eot'); /* IE9*/
+        src: url('./css/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('./css/iconfont.woff') format('woff'), /* chrome、firefox */
+        url('./css/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+        url('./css/iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
+    }
+
+    .iconfont{
+        font-family:"iconfont" !important;
+        font-size:16px;font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke-width: 0.2px;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .special-op-button {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 20px;
+        border: 1px solid;
+        vertical-align: middle;
+        line-height: 120%;
+        font-size: 80px;
+        cursor: pointer;
+        box-shadow: 10px 10px 5px #888888;
+    }
+
+    #J_Cai, #J_Zan {
+        display: inline-block;
+        text-decoration: none;
+        width: 80px;
+        text-align: center;
+    }
+    
+    #J_Zan i{
+        color: #F00;
+    }
+
+    #J_Cai i{
+        color: #00F;
+    }
+
+    #J_Tip {
+        color: #f40;
+        font-size: 32px;
+        height: 32px;
+        line-height: 32px;
+        vertical-align: middle;
+        position: fixed;
+        top: 0;
+        right: 0;
+    }
+
+    #J_BarChart {
+        width: 400px;
+        height: 300px;
+        margin: 0 auto;
+    }
+
+    .J_OperationContent {
+        text-align: center;
+        height: 32px;
+        line-height: 32px;
+        vertical-align: middle;
+    }
+
+    .J_OperationCount {
+        display: inline-block;
+        width: 80px;
+        height: 32px;
+        line-height: 32px;
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .J_ZanCount {
+        color: #F00;
+    }
+
+    .J_CaiCount {
+        color: #00F;
+    }
+
+    #J_BarChart .ks-charts-legend {}
+
+    #J_BarChart .ks-charts-legend ul li {
+        float: left;
+        padding: 10px;
+    }
+
+    #J_BarChart .ks-charts-legend .disable {
+        color: #ccc;
+    }
+
+    #J_BarChart .ks-charts-legend .legend-text {
+        padding-left: 5px;
+    }
+
+    .ks-gallery-kchart-barchart {
+        margin: 80px auto;
+    }
+    </style>
 </head>
 <body>
-<a id="J_Zan" href="javascript:;">赞</a>
-<a id="J_Cai" href="javascript:;">踩</a>
-<div id="J_BarChart" class="bar-chart"></div>
+    <div id="J_BarChart" class="bar-chart"></div>
+    <div class="container">
+        <div id="J_Tip"></div>
+        <div class="J_OperationBarContent">
+            <span class="J_ZanCount J_OperationCount"></span>
+            <span class="J_CaiCount J_OperationCount"></span>
+        </div>
+        <div class="J_OperationBar">
+            <a id="J_Zan" href="javascript:;" title="赞">
+                <i class="iconfont">&#xf0009;</i>
+            </a>
+            <a id="J_Cai" href="javascript:;" title="踩">
+                <i class="iconfont">&#xf0025;</i>
+            </a>
+        </div>
+    </div>
 <script src="http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js" charset="utf-8"></script>
 <script>
-    (function(S) {
-        S.use('node, io', function(S, Node, IO) {
+    KISSY.ready(function() {
+        var S = KISSY;
+        S.config({
+            debug: true
+        });
+
+        S.use('node, io, gallery/kcharts/1.3/barchart/index', function(S, Node, IO, BarChart) {
             var $ = S.all;
 
+            Utils = {};
+            Utils.Tip = function(id, msg) {
+                $(id).html(msg).fadeIn(1.5).fadeOut(1.5);
+            };
+
+            var _tip = S.throttle(function(res) {
+                        Utils.Tip('#J_Tip', res.msg);
+                    }, 2000, this);
 
             $('#J_Zan').on('click', function() {
                 IO.get('/vote/set/zan/', function(res) {
-                    alert(res.msg);
-                });
-
-                IO.get('/vote/get/', function(res) {
-                    $('#J_BarChart').html(JSON.stringify(res));
+                    _tip();
+                    if (res.state === 1) {
+                        renderContent();
+                    }
                 });
             });
 
             $('#J_Cai').on('click', function() {
                 IO.get('/vote/set/cai/', function(res) {
-                    alert(res.msg);
-                });
-
-                IO.get('/vote/get/', function(res) {
-                    $('#J_BarChart').html(JSON.stringify(res));
+                    _tip(res);
+                    if (res.state === 1) {
+                        renderContent();
+                    }
                 });
             });
 
+            var renderContent = function () {
+                IO.get('/vote/get/', function(res) {
+                    console.log('view index.html');
+                    console.log(res);
+                    var zan, cai;
+                    if (res.zan && res.cai) {
+                        zan = res.zan;
+                        cai = res.cai;
+                    } else {
+                        zan = 0;
+                        cai = 0;
+                    }
 
+                    $('.J_ZanCount').html(zan + '赞');
+                    $('.J_CaiCount').html(cai + '踩');
+
+                    var xAxis = [];
+
+                    var param = {
+                        renderTo:"#J_BarChart",
+                        title:{
+                            content:"<div style='height: 32px; line-height: 32px; vertical-align: middle;'>"
+                                        + "<span style='font-weight: bold; font-size: 24px; color: #F00;'></span>"
+                                        + "<span style='font-weight: bold; font-size: 24px; color: #000'></span>"
+                                        + "得分榜"
+                                    + "</div>"
+                        },
+                        anim:{},
+                        yLabels:{
+                            css:{
+                                "text-indent":"-10px"
+                            }
+                        },
+                        colors:['red','blue'],
+                        //stackable:true,
+                        xAxis: {
+                            text: xAxis
+                            /*text: ['筱谷组','紫英组','九十组','鱼相组','七念组'] */
+                        },
+                        yAxis:{
+                            min:0
+                        },
+                        bars:{
+                            barsRatio: .3141592657,
+                            css:{
+                                "border":"1px solid #fff"
+                            }
+                        },
+                        series:[
+                            { text: '顶', data: [zan/*,2,3,4,5*/]},
+                            { text: '踩', data: [cai/*,7,8,9,10*/]}
+                        ],
+                        tip: {
+                            isShow:true,
+                            template: function(data) {
+                                return data.text + " " + data.y
+                            }
+                            
+                        }
+                    };
+
+                    //生成柱状图
+                    var barChart = new BarChart(param);
+                });
+            }
+
+            renderContent();
         });
-    })(KISSY);
+    });
 </script>
 </body>
 </html>
