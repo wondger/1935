@@ -178,26 +178,35 @@
                 $(id).html(msg).fadeIn(1.5).fadeOut(1.5);
             };
 
-            var _tip = S.throttle(function(res) {
-                        Utils.Tip('#J_Tip', res.msg);
-                    }, 2000, this);
+            //一分钟内只能投一次票
+            var _tip = S.throttle(function(op) {
+                        operation(op);
+                    }, 1000, this);
 
-            $('#J_Zan').on('click', function() {
-                IO.get('/vote/set/zan/', function(res) {
-                    _tip();
-                    if (res.state === 1) {
-                        renderContent();
-                    }
-                });
+            var operation = function(op) {
+                if (op === 'J_Zan') {
+                    IO.get('/vote/set/zan/', function(res) {
+                        Utils.Tip('#J_Tip', res.msg);
+                        if (res.state === 1) {
+                            renderContent();
+                        }
+                    });
+                } else if (op === 'J_Cai') {
+                    IO.get('/vote/set/cai/', function(res) {
+                        Utils.Tip('#J_Tip', res.msg);
+                        if (res.state === 1) {
+                            renderContent();
+                        }
+                    });
+                }
+            };
+
+            $('#J_Zan').on('click', function(ev) {
+                _tip($(ev.currentTarget).attr('id'));
             });
 
-            $('#J_Cai').on('click', function() {
-                IO.get('/vote/set/cai/', function(res) {
-                    _tip(res);
-                    if (res.state === 1) {
-                        renderContent();
-                    }
-                });
+            $('#J_Cai').on('click', function(ev) {
+                _tip($(ev.currentTarget).attr('id'));
             });
 
             var renderContent = function () {
@@ -205,7 +214,7 @@
                     console.log('view index.html');
                     console.log(res);
                     var zan, cai;
-                    if (res.zan && res.cai) {
+                    if (typeof res.zan === 'number' && typeof res.cai === 'number') {
                         zan = res.zan;
                         cai = res.cai;
                     } else {

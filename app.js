@@ -7,7 +7,8 @@ var express = require('express'),
     http    = require('http'),
     path    = require('path'),
     xtpl    = require('midway-xtpl'),
-    routes  = require('./routes');
+    routes  = require('./routes'),
+    nobuc = require('nobuc');
 
 var app = express();
 
@@ -24,10 +25,18 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.cookieParser());
+
+app.use(nobuc({
+    //env: "development|production",
+    env: "development",
+    appname: "eureka",
+    key: "buc_user" // 用户信息在req对象中的key，默认："buc_user"
+}));
+
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'src')));
-
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
