@@ -4,5 +4,6 @@
     "midway-xtpl": "0.3.5",
     "bluetooth-serial-port": "~1.0.5",
     "serialport": "1.*"
+    "nobuc": "*"
   }
 }

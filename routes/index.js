@@ -41,10 +41,12 @@ var getData = function(req, res) {
 /**
  * renderHome
  * @param {Object} req
+    debugger;
  * @param {Object} res
  */
 var renderHome = function(req, res) {
     console.log('renderHome()' + new Date());
+    console.log(req.buc_user);
     /*
     res.render('test', {}, function(err, html) {
         if (err) {
@@ -59,7 +61,7 @@ var renderHome = function(req, res) {
         console.log('err:' + new Date());
         console.log(err);
         console.log('html:' + new Date());
-        console.log(html);
+        //console.log(html);
         if (err) {
             throw err;
         } else {
