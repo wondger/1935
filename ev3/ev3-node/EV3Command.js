@@ -33,12 +33,11 @@ var EV3Command = function(commandType, commandCode, enums) {
             break;
         }
         console.log('> ' + (size + commandCounter + header + body).toUpperCase());
-        /**
-         * console.log('size: ' + size);
-         * console.log('commandCounter: ' + commandCounter);
-         * console.log('header: ' + header);
-         * console.log('body: ' + body);
-         */
+        console.log('commandCode: ' + this._getCommandCode());
+        console.log('size: ' + size);
+        console.log('commandCounter: ' + commandCounter);
+        console.log('header: ' + header);
+        console.log('body: ' + body);
         return new Buffer((size + commandCounter + header + body).toUpperCase(), "hex");
     };
 

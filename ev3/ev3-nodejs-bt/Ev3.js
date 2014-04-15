@@ -253,8 +253,118 @@ Ev3_base.prototype.pullReadings = function(){
 	}
 }
 
+Ev3_base.prototype.playSound = function(volume, frequency, duration) {
+  var params = [
+        this._getHexNumbericParameterValue(this.enums.Parameters.BYTE, volume),
+        this._getHexNumbericParameterValue(this.enums.Parameters.UNIT, frequency),
+        this._getHexNumbericParameterValue(this.enums.Parameters.SHORT, duration)
+      ];
+
+  var counter = this.getCounter(),
+      header = this.enmus.CommandTypes.DIRECT_COMMAND_REPLY + "0000",
+      body = this.enmus.CommandCode.TONE + params.join(""),
+      size = ((counter + header + body).length/2).toString(16);
+
+  switch(size.length) {
+    case 1:
+      size = '0' + size + '00';
+      break;
+    case 2:
+      size += '00';
+      break;
+    case 3:
+      size = size.slice(-2) + '0' + size.slice(0,1);
+      break;
+    case 4:
+      size = size.slice(-2) + size.slice(0,2);
+      break;
+  }
+
+  return new Buffer((size + counter + header + body).toUpperCase(), "hex");
+}
 
 
+Ev3_base.prototype.enums = {
+  Parameters: {
+    BYTE: '81',
+    SHORT: '82',
+    UINT: '83'
+  },
+  CommandCode: {
+    TONE: "9401"
+  },
+  CommandTypes: {
+    // Direct command, reply required
+    DIRECT_COMMAND_REPLY: '00',
+    // Direct command, reply not required
+    DIRECT_COMMAND_NO_REPLY: '80',
+    // System command, reply required
+    SYSTEM_COMMAND_REPLY: '01',
+    // System command, reply not required
+    SYSTEM_COMMAND_NO_REPLY: '81'
+  }
+};
+
+/*
+ * Get the hex EV3 parameter value
+ */
+Ev3_base.prototype._getHexNumericParameterValue = function(paramSize, paramValue) {
+    var
+        tempValue = "",
+        numBytes = 0,
+        isPositive = true;
+
+    if (paramValue < 0) {
+        isPositive = false;
+        paramValue = -paramValue;
+    }
+
+    // check limits in size. Instead of failing just go down to max.value
+    // @TODO: Check if can be unsigned
+    switch(paramSize) {
+        case this.enums.Parameters.BYTE:
+            if (paramValue >= 128) {    // 2^7  : 128
+                paramValue = 128;
+            }
+            if (!isPositive) {
+                paramValue = 256 - paramValue;
+            }
+            numBytes = this.enums.ParameterSizes.BYTE;
+        break;
+        case this.enums.Parameters.SHORT:
+            if (paramValue > 32768) {   // 2^15 : 32768
+                paramValue = 32768;
+            }
+            if (!isPositive) {
+                paramValue = 65536 - paramValue;
+            }
+            numBytes = this.enums.ParameterSizes.SHORT;
+        break;
+        case this.enums.Parameters.UINT:
+            if (paramValue > 4294967296) {  // 2^32 : 4294967296
+                paramValue = 4294967296;
+            }
+            isPositive = true;
+            numBytes = this.enums.ParameterSizes.UINT;
+        break;
+    }
+
+    tempValue = paramValue.toString(16);
+    if ((numBytes*2) - tempValue.length !== 0) {
+        tempValue =  (new Array((numBytes*2) - tempValue.length+1).join('0')) + tempValue;
+    }
+    // Convert to little endian
+    switch(paramSize) {
+        case this.enums.Parameters.SHORT:
+            tempValue = tempValue.slice(-2) + tempValue.slice(0,2);
+        break;
+        case this.enums.Parameters.UINT:
+            tempValue = tempValue.slice(-2) + tempValue.slice(-4,-2) + tempValue.slice(-6,-4) + tempValue.slice(0,2);
+        break;
+    }
+
+    return paramSize + tempValue;
+};
 
 
 // ------------- Connection ----------------
