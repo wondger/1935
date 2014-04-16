@@ -138,8 +138,11 @@ exports.stopMove = function() {
  * @return
  */
 exports.playSound = function(sound, volumn, duration) {
-  robot.sp.write(new Buffer("11001A008000009401810A835B020000822C01", "hex"), function() {
-  });
+  /**
+   * robot.sp.write(new Buffer("11001A008000009401810A835B020000822C01", "hex"), function() {
+   * });
+   */
+	robot.playTone(10, Math.floor(Math.random()*(1000-100+1)+100), 300);
   process.stdout.write("playsound...");
 };
 

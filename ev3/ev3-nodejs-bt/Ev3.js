@@ -149,8 +149,6 @@ var Ev3_base = function(btport){
      * console.log('body: ' + body_a + body_b + body_c + body_d);
      */
 
-    console.log(body);
-    
 		return  new Buffer( body.toUpperCase(), "hex");
 	};
 	var counter = 0;
@@ -253,16 +251,42 @@ Ev3_base.prototype.pullReadings = function(){
 	}
 }
 
-Ev3_base.prototype.playSound = function(volume, frequency, duration) {
+Ev3_base.prototype.enums = {
+  Parameters: {
+    BYTE: '81',
+    SHORT: '82',
+    UINT: '83'
+  },
+  ParameterSizes: {
+    BYTE: 1,
+    SHORT: 2,
+    UINT: 4
+  },
+  CommandCode: {
+    TONE: "9401"
+  },
+  CommandTypes: {
+    // Direct command, reply required
+    DIRECT_COMMAND_REPLY: '00',
+    // Direct command, reply not required
+    DIRECT_COMMAND_NO_REPLY: '80',
+    // System command, reply required
+    SYSTEM_COMMAND_REPLY: '01',
+    // System command, reply not required
+    SYSTEM_COMMAND_NO_REPLY: '81'
+  }
+};
+
+Ev3_base.prototype.playTone = function(volume, frequency, duration) {
   var params = [
         this._getHexNumbericParameterValue(this.enums.Parameters.BYTE, volume),
-        this._getHexNumbericParameterValue(this.enums.Parameters.UNIT, frequency),
+        this._getHexNumbericParameterValue(this.enums.Parameters.UINT, frequency),
         this._getHexNumbericParameterValue(this.enums.Parameters.SHORT, duration)
       ];
 
   var counter = this.getCounter(),
-      header = this.enmus.CommandTypes.DIRECT_COMMAND_REPLY + "0000",
-      body = this.enmus.CommandCode.TONE + params.join(""),
+      header = this.enums.CommandTypes.DIRECT_COMMAND_REPLY + "0000",
+      body = this.enums.CommandCode.TONE + params.join(""),
       size = ((counter + header + body).length/2).toString(16);
 
   switch(size.length) {
@@ -280,35 +304,15 @@ Ev3_base.prototype.playSound = function(volume, frequency, duration) {
       break;
   }
 
-  return new Buffer((size + counter + header + body).toUpperCase(), "hex");
+  this.sp.write(new Buffer((size + counter + header + body).toUpperCase(), "hex"), function() {
+  });
 }
 
-
-Ev3_base.prototype.enums = {
-  Parameters: {
-    BYTE: '81',
-    SHORT: '82',
-    UINT: '83'
-  },
-  CommandCode: {
-    TONE: "9401"
-  },
-  CommandTypes: {
-    // Direct command, reply required
-    DIRECT_COMMAND_REPLY: '00',
-    // Direct command, reply not required
-    DIRECT_COMMAND_NO_REPLY: '80',
-    // System command, reply required
-    SYSTEM_COMMAND_REPLY: '01',
-    // System command, reply not required
-    SYSTEM_COMMAND_NO_REPLY: '81'
-  }
-};
 
 /*
  * Get the hex EV3 parameter value
  */
-Ev3_base.prototype._getHexNumericParameterValue = function(paramSize, paramValue) {
+Ev3_base.prototype._getHexNumbericParameterValue = function(paramSize, paramValue) {
     var
         tempValue = "",
         numBytes = 0,
