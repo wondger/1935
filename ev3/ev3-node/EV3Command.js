@@ -1,4 +1,5 @@
 ﻿/*
+ *
  * Entity that manages an EV3 brick command
  * @TODO: Add most \lms2012\c_com\source\c_com.h functionality here, at enums, etc.
  */
@@ -32,6 +33,11 @@ var EV3Command = function(commandType, commandCode, enums) {
             break;
         }
         console.log('> ' + (size + commandCounter + header + body).toUpperCase());
+        console.log('commandCode: ' + this._getCommandCode());
+        console.log('size: ' + size);
+        console.log('commandCounter: ' + commandCounter);
+        console.log('header: ' + header);
+        console.log('body: ' + body);
         return new Buffer((size + commandCounter + header + body).toUpperCase(), "hex");
     };
 
