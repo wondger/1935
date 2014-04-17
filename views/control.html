@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>“全栈机器人”远程控制页面</title>
+    <link rel="apple-touch-icon" href="./img/icon_256.png">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="1935 Vote Counting" name="description" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" />
+    <link rel="apple-touch-startup-image" sizes="1024x748" href="./img/launch_screen.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+    <link rel="stylesheet" href="./css/common.css" />
+    <style>
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+#container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+}
+
+/*arrow iconfonts*/
+@font-face {
+    font-family: 'iconfont';
+    src: url('./iconfont-arrows/iconfont.eot'); /* IE9*/
+    src: url('./iconfont-arrows/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('./iconfont-arrows/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('./iconfont-arrows/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('./iconfont-arrows/iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
+}
+
+#container .iconfont {
+    font-size: 36px;
+    line-height: 42px;
+    height: 42px;
+    overflow: hidden;
+    vertical-align: middle;
+    color: red;
+}
+
+.J_RemoteControl {
+    width: 40px;
+    height: 40px;
+    margin: 10px auto;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.J_RemoteControl i {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+#J_RemoteControl_UpArrow {
+    position: absolute;
+    top: 0;
+    left: 40px;
+}
+
+#J_RemoteControl_DownArrow {
+    bottom: 0;
+    left: 40px;
+    position: absolute;
+}
+#J_RemoteControl_LeftArrow {
+    position: absolute;
+    left: 0;
+    top: 30px;
+}
+
+#J_RemoteControl_RightArrow {
+    position: absolute;
+    top: 30px;
+    right: 0;
+}
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="J_RemoteControl_UpArrow" class="J_RemoteControl">
+            <i class="iconfont">&#x3479;</i>
+        </div>
+        <div id="J_RemoteControl_DownArrow" class="J_RemoteControl">
+            <i class="iconfont">&#x3443;</i>
+        </div>
+        <div id="J_RemoteControl_LeftArrow" class="J_RemoteControl">
+            <i class="iconfont">&#x3433;</i>
+        </div>
+        <div id="J_RemoteControl_RightArrow" class="J_RemoteControl">
+            <i class="iconfont">&#x3435;</i>
+        </div>
+    </div>
+    <div id="OtherOperations">
+    </div>
+    <script src="http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js" charset="utf-8"></script>
+    <script>
+KISSY.ready(function() {
+    var S = KISSY;
+    S.config({
+        debug: true
+    });
+
+    S.use('node, io', function(S, Node, IO) {
+        var $ = S.all;
+        var timer;
+
+        /**
+         *@description: repeat signal sending operation and etc
+         *@param: id {String} name of the operation
+         */
+        function repeatOperation(id) {
+            timer = setTimeout(function() {
+                //todo
+                switch(id) {
+                    case 'J_RemoteControl_UpArrow':
+                        break;
+                    case 'J_RemoteControl_DownArrow':
+                        break;
+                    case 'J_RemoteControl_LeftArrow':
+                        break;
+                    case 'J_RemoteControl_RightArrow':
+                        break;
+                }
+            }, 1000);
+        }
+
+        $('.J_RemoteControl').on('touchstart mousedown', function(ev) {
+            var id = $(ev.currentTarget).attr('id');
+            $(ev.currentTarget).css('background', '#000');
+            $('#' + id + ' .iconfont').css('color', '#CCC');
+            repeatOperation(id);
+            console.log(id + ' operation starts');
+        }).on('touchend mouseup', function(ev) {
+            var id = $(ev.currentTarget).attr('id');
+            $(ev.currentTarget).css('background', '#FFF');
+            $('#' + id + ' .iconfont').css('color', 'RED');
+            //todo:send signal to ev3
+            console.log(id + ' operation ends');
+            repeatOperation(id);
+        });
+    });
+});
+    </script>
+</body>
+</html>

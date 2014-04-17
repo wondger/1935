@@ -1,0 +1,33 @@
+.viewport {
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    -webkit-transform: translateZ(0);
+    height: 100%;
+}
+
+.flipsnap {
+    width: 500%;
+    height: 100%;
+    background: #CCC;
+}
+
+.flipsnap:after {
+    content: '';
+    display: block;
+    clear: both;
+    height: 0;
+}
+
+.item {
+    float: left;
+    width: 20%;
+    font-size: 50px;
+    text-align: center;
+    padding: 50px 0;
+    background: #EFEFEF;
+    border: 5px solid #999;
+    color: #666;
+    box-sizing: border-box;
+    height: 100%;
+}
