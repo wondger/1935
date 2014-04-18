@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>FEM“天生一队”第四季--NodeJS硬件编程</title>
+    <link rel="apple-touch-icon" href="./img/icon_256.png">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="1935 Vote Counting" name="description" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" />
+    <link rel="apple-touch-startup-image" sizes="1024x748" href="./img/launch_screen.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/swipeview.css" />
+    <script type="text/javascript" src="./libs/swipeview.js"></script>
+</head>
+<body>
+	<div id="wrapper"></div>
+	<ul id="nav">
+		<li id="prev" onclick="gallery.prev()">-</li>
+		<li class="selected" onclick="gallery.goToPage(0)"></li>
+		<li onclick="gallery.goToPage(1)"></li>
+		<li onclick="gallery.goToPage(2)"></li>
+		<li onclick="gallery.goToPage(3)"></li>
+		<li onclick="gallery.goToPage(4)"></li>
+        <!--<li onclick="gallery.goToPage(5)"></li>-->
+		<li id="next" onclick="gallery.next()">+</li>
+	</ul>
+    <script type="text/javascript">
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+var	gallery,
+	el,
+	i,
+	page,
+	dots = document.querySelectorAll('#nav li'),
+	slides = [
+		{
+			img: 'http://gtms04.alicdn.com/tps/i4/T1yj8nFRpaXXacWIIG-3264-2448.jpeg_620x10000.jpg',
+			//width: 300,
+			//height: 213,
+            desc: '<h1>安全行车助手</h1>'
+                + '描述：<em>基于LCD、树莓派等硬件编程实现的安全行车助手</em><br>'
+                + '组长：<em>紫英</em><br>'
+                + '组员：<em>风驰</em>、<em>石霸</em>、<em>阿克</em>、<em>水澜</em>、<em>善繁</em>'
+		},
+		{
+			img: 'http://gtms04.alicdn.com/tps/i4/T1TrJpFSXXXXbzlxAc-640-1136.png_620x10000.jpg',
+			//width: 300,
+			//height: 164,
+            desc: '<h1>智能点名机</h1>'
+                + '描述：<em>使用iBeacon技术实现的点名器</em><br>'
+                + '组长：<em>鱼相</em><br>'
+                + '组员：<em>昊川</em>、<em>幽零</em>、<em>伯方</em>、<em>卢石</em>、<em>清羽</em>'
+		},
+		{
+			img: 'http://gtms03.alicdn.com/tps/i3/T1ZhJpFNxXXXXfvlE9-1184-2104.jpg_620x10000.jpg',
+			//width: 300,
+			//height: 213,
+            desc: '<h1>“全栈”机器人</h1>'
+                + '描述：<em>基于Node.js和乐高ev3机器人实现的“全栈”机器人</em><br>'
+                + '组长：<em>七念</em><br>'
+                + '组员：<em>棪木</em>、<em>莫争</em>、<em>淘杰</em>、<em>晓白</em>、<em>云翮</em>'
+		},
+		{
+			img: 'http://gtms03.alicdn.com/tps/i3/T1agpjFMBdXXX_nQcb-1813-1218.jpg_620x10000.jpg',
+			//width: 147,
+			//height: 220,
+            desc: '<h1>全能游戏机</h1>'
+                + '描述：<em>基于树莓派加模拟器和Node.js可以玩超多红白机GBA街机</em>'
+                + '<em>等经典游戏LED随音乐节奏闪动的即插即用支持多人对战的全能'
+                + '游戏机</em><br>组长：<em>筱谷</em><br>组员：<em>渐飞</em>、<em>十渡</em>、<em>行空</em>、<em>元彦</em>、<em>秋知</em>'
+		},
+		{
+			img: 'http://gtms02.alicdn.com/tps/i2/T1RoVoFTpXXXblpegO-3264-2448.jpg_620x10000.jpg',
+			//width: 300,
+			//height: 213,
+            desc: '<h1>宠物伴侣</h1>'
+                + '描述：<em>基于Node.js和树莓派实现的温馨宠物离家自动伴侣</em>'
+                + '<br>组长：<em>九十</em><br>组员：<em>长天</em>、<em>常胤</em>、<em>金灿</em>、<em>赫门</em>、<em>承玉</em>、<em>圆影</em>'
+		}
+	];
+
+gallery = new SwipeView('#wrapper', { numberOfPages: slides.length });
+
+// Load initial data
+for (i=0; i<3; i++) {
+	page = i==0 ? slides.length-1 : i-1;
+    console.log('page = ' + page);
+	el = document.createElement('img');
+	el.className = 'loading';
+    console.log('img src:' + slides[page].img);
+	el.src = slides[page].img;
+    /*
+    if (slides[page].width) {
+	    el.width = slides[page].width;
+    }
+    if (slides[page].height) {
+	    el.height = slides[page].height;
+    }
+	el.onload = function () { this.className = ''; }
+	gallery.masterPages[i].appendChild(el);
+    */
+
+	el = document.createElement('span');
+    el.className = 'swipeview-description-span';
+	el.innerHTML = slides[page].desc;
+	gallery.masterPages[i].appendChild(el)
+}
+
+gallery.onFlip(function () {
+	var el,
+		upcoming,
+		i;
+
+	for (i=0; i<3; i++) {
+		upcoming = gallery.masterPages[i].dataset.upcomingPageIndex;
+
+		if (upcoming != gallery.masterPages[i].dataset.pageIndex) {
+			//el = gallery.masterPages[i].querySelector('img');
+			//el.className = 'loading';
+			//el.src = slides[upcoming].img;
+			//el.width = slides[upcoming].width;
+			//el.height = slides[upcoming].height;
+			
+			el = gallery.masterPages[i].querySelector('span');
+			el.innerHTML = slides[upcoming].desc;
+		}
+	}
+	
+	document.querySelector('#nav .selected').className = '';
+	dots[gallery.pageIndex+1].className = 'selected';
+});
+
+gallery.onMoveOut(function () {
+	gallery.masterPages[gallery.currentMasterPage].className = gallery.masterPages[gallery.currentMasterPage].className.replace(/(^|\s)swipeview-active(\s|$)/, '');
+});
+
+gallery.onMoveIn(function () {
+	var className = gallery.masterPages[gallery.currentMasterPage].className;
+	/(^|\s)swipeview-active(\s|$)/.test(className) || (gallery.masterPages[gallery.currentMasterPage].className = !className ? 'swipeview-active' : className + ' swipeview-active');
+});
+
+</script>
+</body>
+</html>

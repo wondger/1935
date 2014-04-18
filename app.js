@@ -1,9 +1,9 @@
-
 /**
  * Module dependencies.
  */
 
 var express = require('express'),
+    io = require('socket.io'),
     http    = require('http'),
     path    = require('path'),
     xtpl    = require('midway-xtpl'),
@@ -35,7 +35,7 @@ app.use(nobuc({
 }));
 
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'src')));
 // development only
 if ('development' == app.get('env')) {
@@ -45,6 +45,7 @@ if ('development' == app.get('env')) {
 // 添加路由配置
 routes(app);
 
-http.createServer(app).listen(app.get('port'), '127.0.0.1', function(){
+//config the ip address to be binded
+http.createServer(app).listen(app.get('port'), '0.0.0.0', function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
