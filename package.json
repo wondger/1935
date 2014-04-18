@@ -3,7 +3,8 @@
     "express": "3.4.8",
     "midway-xtpl": "0.3.5",
     "bluetooth-serial-port": "~1.0.5",
-    "serialport": "1.*"
-    "nobuc": "*"
+    "serialport": "1.*",
+    "nobuc": "~1.2.1",
+    "socket.io": "~0.9.16"
   }
 }
