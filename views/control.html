@@ -106,6 +106,7 @@ body {
     <div id="OtherOperations">
     </div>
     <script src="http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js" charset="utf-8"></script>
+    <script src="libs/socket.io.js" charset="utf-8"></script>
     <script>
 KISSY.ready(function() {
     var S = KISSY;
@@ -117,13 +118,20 @@ KISSY.ready(function() {
         var $ = S.all;
         var timer;
 
+        /*
+        var socket = io.connect('http://localhost:3999');
+        socket.on('connect', function(data) {
+            debugger;
+            console.log(data);
+        });
+        */
+
         /**
          *@description: repeat signal sending operation and etc
          *@param: id {String} name of the operation
          */
-        function repeatOperation(id) {
-            timer = setTimeout(function() {
-                //todo
+        function repeatOperation(id, action) {
+            //timer = setTimeout(function() {
                 switch(id) {
                     case 'J_RemoteControl_UpArrow':
                         break;
@@ -134,14 +142,14 @@ KISSY.ready(function() {
                     case 'J_RemoteControl_RightArrow':
                         break;
                 }
-            }, 1000);
+            //}, 1000);
         }
 
-        $('.J_RemoteControl').on('touchstart mousedown', function(ev) {
+        $('.J_RemoteControl').on('touchstart mousedown touch click', function(ev) {
             var id = $(ev.currentTarget).attr('id');
             $(ev.currentTarget).css('background', '#000');
             $('#' + id + ' .iconfont').css('color', '#CCC');
-            repeatOperation(id);
+            repeatOperation(id, 'start');
             console.log(id + ' operation starts');
         }).on('touchend mouseup', function(ev) {
             var id = $(ev.currentTarget).attr('id');
@@ -149,7 +157,7 @@ KISSY.ready(function() {
             $('#' + id + ' .iconfont').css('color', 'RED');
             //todo:send signal to ev3
             console.log(id + ' operation ends');
-            repeatOperation(id);
+            repeatOperation(id, 'stop');
         });
     });
 });
