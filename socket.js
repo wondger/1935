@@ -6,6 +6,8 @@
 
 /*!*/
 
+var sockets = {};
+
 module.exports = function(server) {
   var io = require('socket.io').listen(server);
 
@@ -26,6 +28,9 @@ module.exports = function(server) {
     });
 
     socket.on("slower", function(data) {
+    });
+
+    socket.on("stop", function(data) {
     });
   });
 };
