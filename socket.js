@@ -1,6 +1,6 @@
 /*!
  * # 
- * @author yanmu.wj@taobao.com
+ @author yanmu.wj@taobao.com
  * @date 2014-04-21
  */
 
@@ -12,6 +12,8 @@ module.exports = function(server) {
   var io = require('socket.io').listen(server);
 
   io.sockets.on('connection', function(socket) {
+    console.log("socket.io connected...");
+
     socket.on("forward", function(data) {
     });
 

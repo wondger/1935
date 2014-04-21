@@ -46,9 +46,10 @@ if ('development' == app.get('env')) {
 
 // 添加路由配置
 routes(app);
-socket(app);
 
 //config the ip address to be binded
-http.createServer(app).listen(app.get('port'), '0.0.0.0', function(){
+var server = http.createServer(app).listen(app.get('port'), '0.0.0.0', function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
+
+socket(server);
