@@ -8,6 +8,7 @@
     <meta name="format-detection" content="telephone=no" />
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" />
     <link rel="stylesheet" href="http://g.tbcdn.cn/??tb/global/2.6.13/reset-min.css" />
+    <link rel="stylesheet" href="./css/common.css">
     <style type="text/css">
     body {
         position: relative;
@@ -36,7 +37,7 @@
         padding-bottom: 10px;
     }
 
-    //zan and cai iconfonts
+    /*zan and cai iconfonts*/
     @font-face {
         font-family: 'iconfont';
         src: url('./css/iconfont.eot'); /* IE9*/
@@ -44,14 +45,6 @@
         url('./css/iconfont.woff') format('woff'), /* chrome、firefox */
         url('./css/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
         url('./css/iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
-    }
-
-    .iconfont{
-        font-family:"iconfont" !important;
-        font-size:16px;font-style:normal;
-        -webkit-font-smoothing: antialiased;
-        -webkit-text-stroke-width: 0.2px;
-        -moz-osx-font-smoothing: grayscale;
     }
 
     .special-op-button {
@@ -187,16 +180,14 @@
             var operation = function(op) {
                 if (op === 'J_Zan') {
                     IO.get('/vote/set/zan/', function(res) {
-                        Utils.Tip('#J_Tip', res.msg);
                         if (res.state === 1) {
-                            renderContent();
+                            renderContent(res.msg);
                         }
                     });
                 } else if (op === 'J_Cai') {
                     IO.get('/vote/set/cai/', function(res) {
-                        Utils.Tip('#J_Tip', res.msg);
                         if (res.state === 1) {
-                            renderContent();
+                            renderContent(res.msg);
                         }
                     });
                 }
@@ -210,8 +201,13 @@
                 _tip($(ev.currentTarget).attr('id'));
             });
 
-            // rerender the content of whole page after certain operation
-            var renderContent = function () {
+            /*
+             *@description:rerender the content of whole page after certain operation
+             *@param: msg {String}
+             */
+            var renderContent = function (msg) {
+                var self = this;
+                self.msg = msg;
                 IO.get('/vote/get/', function(res) {
                     var res = JSON.parse(res);
                     console.log('view index.html');
@@ -232,6 +228,9 @@
                     if (zan === 0 && cai === 0) {
                         $('#J_BarChart').html('<div style="margin: 20px auto; font-size: 4em; text-align: center;">暂无数据</div>');
                     } else {
+                        if (self.msg) {
+                            Utils.Tip('#J_Tip', msg);
+                        }
                         var xAxis = [];
 
                         var param = {

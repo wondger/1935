@@ -12,7 +12,8 @@ var express = require('express'),
 
 var app = express();
 
-app.set('port', process.env.PORT || 3000);
+//app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3999);
 
 // 配置渲染引擎
 xtpl.initExpress(app, {
