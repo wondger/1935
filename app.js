@@ -8,7 +8,8 @@ var express = require('express'),
     path    = require('path'),
     xtpl    = require('midway-xtpl'),
     routes  = require('./routes'),
-    nobuc = require('nobuc');
+    nobuc = require('nobuc'),
+    socket = require('./socket');
 
 var app = express();
 
