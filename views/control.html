@@ -131,12 +131,18 @@ KISSY.ready(function() {
             //timer = setTimeout(function() {
                 switch(id) {
                     case 'J_RemoteControl_UpArrow':
+                        socket.emit('forward');
                         break;
                     case 'J_RemoteControl_DownArrow':
+                        socket.emit('back');
                         break;
                     case 'J_RemoteControl_LeftArrow':
+                        socket.emit('left');
                         break;
                     case 'J_RemoteControl_RightArrow':
+                        socket.emit('right');
+                        break;
+                    default:
                         break;
                 }
             //}, 1000);
