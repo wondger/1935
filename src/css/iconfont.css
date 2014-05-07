@@ -16,15 +16,15 @@
 }
 
 
-.icon-xiangshang:before { content: "\f0113"; }
+.icon-arrowdownalt1:before { content: "\f000d"; }
 
-.icon-zuojiantou:before { content: "\3432"; }
+.icon-arrowleftalt1:before { content: "\f0010"; }
 
-.icon-youjiantou:before { content: "\3434"; }
+.icon-arrowrightalt1:before { content: "\f0013"; }
 
-.icon-yuanxingtingzhi:before { content: "\f0015"; }
+.icon-arrowupalt1:before { content: "\f0016"; }
 
-.icon-xiajiantou:before { content: "\f0005"; }
+.icon-stopselected:before { content: "\e729"; }
 
-.icon-yinle:before { content: "\f002d"; }
+.icon-music:before { content: "\e618"; }
 
