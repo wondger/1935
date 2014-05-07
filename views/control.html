@@ -20,31 +20,34 @@ body {
 }
 
 #container {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
     margin: 0 auto;
     box-sizing: border-box;
     text-align: center;
     position: relative;
 }
 
-/*arrow iconfonts*/
-@font-face {
-    font-family: 'iconfont';
-    src: url('./iconfont-arrows/iconfont.eot'); /* IE9*/
-    src: url('./iconfont-arrows/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('./iconfont-arrows/iconfont.woff') format('woff'), /* chrome、firefox */
-    url('./iconfont-arrows/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-    url('./iconfont-arrows/iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
+@font-face {font-family: 'iconfont';
+    src: url('iconfont.eot'); /* IE9*/
+    src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('iconfont.woff') format('woff'), /* chrome、firefox */
+    url('iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
 }
 
 #container .iconfont {
-    font-size: 36px;
+    font-size: 42px;
     line-height: 42px;
     height: 42px;
     overflow: hidden;
     vertical-align: middle;
     color: red;
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .J_RemoteControl {
@@ -103,21 +106,21 @@ body {
 <body>
     <div id="container">
         <div id="J_RemoteControl_UpArrow" class="J_RemoteControl">
-            <i class="iconfont">&#x3479;</i>
+            <i class="iconfont">&#xf0113;</i>
         </div>
         <div id="J_RemoteControl_DownArrow" class="J_RemoteControl">
-            <i class="iconfont">&#x3443;</i>
+            <i class="iconfont">&#xf0005;</i>
         </div>
         <div id="J_RemoteControl_LeftArrow" class="J_RemoteControl">
-            <i class="iconfont">&#x3433;</i>
+            <i class="iconfont">&#x3432;</i>
         </div>
         <div id="J_RemoteControl_RightArrow" class="J_RemoteControl">
-            <i class="iconfont">&#x3435;</i>
+            <i class="iconfont">&#x3434;</i>
         </div>
         <div id="J_RemoteControl_Stop" class="J_RemoteControl">
-            <i class="iconfont">停止</i>
+            <i class="iconfont">&#xf0015;</i>
         </div><div id="J_RemoteControl_Play" class="J_RemoteControl">
-            <i class="iconfont">音乐</i>
+            <i class="iconfont">&#xf002d;</i>
         </div>
     </div>
     <div id="OtherOperations">
