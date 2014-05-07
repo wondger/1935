@@ -8,8 +8,8 @@ var express = require('express'),
     path    = require('path'),
     xtpl    = require('midway-xtpl'),
     routes  = require('./routes'),
-    nobuc = require('nobuc'),
-    socket = require('./socket');
+    nobuc = require('nobuc');
+    //socket = require('./socket');
 
 var app = express();
 
@@ -51,4 +51,8 @@ var server = http.createServer(app).listen(app.get('port'), '0.0.0.0', function(
     console.log('Express server listening on port ' + app.get('port'));
 });
 
-socket(server);
+//socket(server);
+
+io.listen(server).sockets.on('connection', function(socket) {
+    console.log('socket io connected');
+});

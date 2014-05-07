@@ -86,6 +86,18 @@ body {
     top: 30px;
     right: 0;
 }
+
+#J_RemoteControl_Stop {
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+}
+
+#J_RemoteControl_Play {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
     </style>
 </head>
 <body>
@@ -102,11 +114,16 @@ body {
         <div id="J_RemoteControl_RightArrow" class="J_RemoteControl">
             <i class="iconfont">&#x3435;</i>
         </div>
+        <div id="J_RemoteControl_Stop" class="J_RemoteControl">
+            <i class="iconfont">停止</i>
+        </div><div id="J_RemoteControl_Play" class="J_RemoteControl">
+            <i class="iconfont">音乐</i>
+        </div>
     </div>
     <div id="OtherOperations">
     </div>
     <script src="http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js" charset="utf-8"></script>
-    <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+    <script src="./socket.io/socket.io.js" charset="utf-8"></script>
     <script>
 KISSY.ready(function() {
     var S = KISSY;
@@ -142,7 +159,11 @@ KISSY.ready(function() {
                     case 'J_RemoteControl_RightArrow':
                         socket.emit('right');
                         break;
-                    default:
+                    case 'J_RemoteControl_Stop':
+                        socket.emit('stop');
+                        break;
+                    case 'J_RemoteControl_Play':
+                        socket.emit('play');
                         break;
                 }
             //}, 1000);

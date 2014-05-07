@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.io Example</title>
+    <script src="./socket.io/socket.io.js"></script>
+</head>
+<body>
+    <script>
+var socket = io.connect();
+
+socket.on('data', function(data) {
+    console.log(data);
+    console.log(data.date);
+    document.getElementById('date').innerText = data.date;
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('text').addEventListener('keypress', function(e) {
+        socket.emit('client_data', {'letter' : String.fromCharCode(e.charCode)});
+    });
+});
+    </script>
+    <div id="date"></div>
+    <textarea id="text" name="" cols="30" rows="10"></textarea>
+</body>
+</html>
