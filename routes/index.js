@@ -137,6 +137,26 @@ var renderControl = function(req, res) {
         }
     });
 
+};
+
+var socketHandler = function(req, res) {
+    console.log('socketHandler()' + new Date());
+    // display buc user information
+    console.log(req.buc_user);
+    // render corresponding vote.html page in folder views
+    res.render('sockethandler', {}, function(err, html) {
+        console.log('render sockethandler:' + new Date());
+        console.log('err:' + new Date());
+        console.log(err);
+        console.log('html:' + new Date());
+        //console.log(html);
+        if (err) {
+            throw err;
+        } else {
+            res.send(html);
+        }
+    });
+
 
 };
 
@@ -145,6 +165,7 @@ module.exports = function(app) {
     // default renderHome for index page
     app.get('/', renderHome);
     app.get('/vote', renderVote);
+    app.get('/socket', socketHandler);
     app.get('/control', renderControl);
     app.get('/vote/get/', getData);
     app.get('/vote/set/:state/', setData);
