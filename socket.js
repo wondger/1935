@@ -6,40 +6,57 @@
 
 /*!*/
 
+var ev3 = require('./ev3');
+
 var sockets = {};
 
 module.exports = function(server) {
   var io = require('socket.io').listen(server);
 
-  io.sockets.on('connection', function(socket) {
-    console.log("socket.io connected...");
+  ev3.connect(function() {
 
-    socket.on("forward", function(data) {
-      console.log("forward");
+    io.sockets.on('connection', function(socket) {
+      console.log("socket.io connected...");
+
+      socket.on("forward", function(data) {
+        console.log("forward...");
+        ev3.move2forward(10);
+      });
+
+      socket.on("back", function(data) {
+        console.log("back...");
+        ev3.move2back(10);
+      });
+
+      socket.on("left", function(data) {
+        console.log("left...");
+        ev3.turnLeft(20);
+      });
+
+      socket.on("right", function(data) {
+        console.log("right...");
+        ev3.turnRight(20);
+      });
+
+      socket.on("faster", function(data) {
+        console.log("faster");
+      });
+
+      socket.on("slower", function(data) {
+        console.log("slower");
+      });
+
+      socket.on("stop", function(data) {
+        console.log("stop...");
+        ev3.stopMove();
+      });
+
+      socket.on("play", function(data) {
+        console.log("play...");
+        ev3.playSound();
+      });
     });
 
-    socket.on("back", function(data) {
-      console.log("back");
-    });
-
-    socket.on("left", function(data) {
-      console.log("left");
-    });
-
-    socket.on("right", function(data) {
-      console.log("right");
-    });
-
-    socket.on("faster", function(data) {
-      console.log("faster");
-    });
-
-    socket.on("slower", function(data) {
-      console.log("slower");
-    });
-
-    socket.on("stop", function(data) {
-      console.log("stop");
-    });
   });
+
 };

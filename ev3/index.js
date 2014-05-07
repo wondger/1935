@@ -143,7 +143,6 @@ exports.playSound = function(sound, volumn, duration) {
    * });
    */
 	robot.playTone(10, Math.floor(Math.random()*(1000-100+1)+100), 300);
-  process.stdout.write("playsound...");
 };
 
 exports.stopAll = function() {
